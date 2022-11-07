@@ -4,7 +4,7 @@ import {Lyric} from '../models/lyric.js';
 
 
 const lyricGet = async (req, res= response) => {
-    
+   try { 
     const {band} = req.params
     const songId = await getBand(band);
     const lyricExcerpt= await getLyric(songId);
@@ -17,6 +17,12 @@ const lyricGet = async (req, res= response) => {
 
     res = new Lyric ({band, songId, lyricExcerpt});
     await res.save();
+} catch(error) {
+    console.log('Lyric not found');
+    res.json({
+       msg: '404 | Lyric not found'
+    });;
+}
 }
 
 const lyricsGetAll = async (req, res= response) => {
